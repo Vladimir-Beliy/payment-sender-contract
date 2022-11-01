@@ -21,20 +21,3 @@ def create_voucher(signer: Account, verifying_contract, payee, nonce, amount):
     signedMsg = Account.sign_message(msg.signable_message, signer.key)
 
     return signedMsg.signature
-
-
-def deploy_test_sender_with_token(voucher_signer=Account.create()):
-    token = TestToken.deploy({"from": accounts[0]})
-
-    payment_sender = PaymentSender.deploy(
-        voucher_signer.address,
-        token.address,
-        {"from": accounts[0]},
-    )
-
-    token.transfer(
-        payment_sender.address,
-        token.balanceOf(accounts[0]),
-    )
-
-    return payment_sender, token
