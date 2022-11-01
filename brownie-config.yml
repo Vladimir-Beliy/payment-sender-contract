@@ -1,0 +1,16 @@
+dependencies:
+  - OpenZeppelin/openzeppelin-contracts@4.7.2
+
+compiler:
+  solc:
+    remappings:
+      - '@openzeppelin=OpenZeppelin/openzeppelin-contracts@4.7.2'
+
+dotenv: .env
+
+networks:
+  default: development
+
+wallets:
+  deployer_privet_key: ${DEPLOYER_PRIVET_KEY}
+  voucher_signer_pub_key: ${VOUCHER_SIGNER_PUB_KEY}
