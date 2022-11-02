@@ -7,8 +7,11 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/utils/cryptography/draft-EIP712.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
 contract PaymentSender is Ownable, Pausable, EIP712 {
+    using SafeERC20 for IERC20;
+
     event PaymentReleased(address indexed payee, uint256 nonce, uint256 amount);
 
     address private _voucherSigner;
@@ -28,9 +31,9 @@ contract PaymentSender is Ownable, Pausable, EIP712 {
 
         _nonce[msg.sender] = nonce + 1;
 
-        _paymentToken.transfer(msg.sender, amount);
-
         emit PaymentReleased(msg.sender, nonce, amount);
+
+        _paymentToken.safeTransfer(msg.sender, amount);
     }
 
     function voucherSigner(address voucherSigner_) external onlyOwner {
